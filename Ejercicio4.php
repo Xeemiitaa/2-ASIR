@@ -3,39 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificación de Sueldo</title>
+    <title>Generar Serie</title>
 </head>
 <body>
-    <h1>Verificación de Sueldo</h1>
-    
+    <h1>Generar Serie Numérica</h1>
+
     <form method="POST">
-        <label for="sueldo">Introduce tu sueldo:</label><br>
-        <input type="number" id="sueldo" name="sueldo" step="0.01" required><br><br>
-        
-        <input type="submit" value="Evaluar">
+        <label for="num">Introduce la cantidad de valores de la serie:</label><br>
+        <input type="number" id="num" name="num" required><br><br>
+        <input type="submit" value="Generar">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Tomamos el valor introducido por el usuario
-        $sueldo = $_POST['sueldo'];
+        // Recoger el valor del número ingresado
+        $num = $_POST['num'];
 
-        echo "<h2>Resultado:</h2>";
+        // Inicializamos la serie
+        $serie = array();
+        
+        // Generamos la serie alternando entre dos secuencias
+        $secuencia1 = 1; // Comienza en 1
+        $secuencia2 = 5; // Comienza en 5
 
-        // Verificamos si el sueldo es superior a 600
-        if ($sueldo > 600) {
-            echo "<p>El sueldo es superior a 600.</p>";
+        for ($i = 0; $i < $num; $i++) {
+            if ($i % 2 == 0) {
+                // Si el índice es par, añadimos un número de la secuencia1
+                $serie[] = $secuencia1;
+                $secuencia1 += 2; // Incrementamos en 2 para la siguiente vez
+            } else {
+                // Si el índice es impar, añadimos un número de la secuencia2
+                $serie[] = $secuencia2;
+                $secuencia2 += 2; // Incrementamos en 2 para la siguiente vez
+            }
         }
 
-        // Verificamos si el sueldo es superior a 1200
-        if ($sueldo > 1200) {
-            echo "<p>El sueldo es superior a 1200.</p>";
-        }
-
-        // Verificamos si el sueldo es superior a 1800
-        if ($sueldo > 1800) {
-            echo "<p>El sueldo es superior a 1800.</p>";
-        }
+        // Mostrar la serie generada
+        echo "<h2>Serie Generada:</h2>";
+        echo "<p>" . implode(", ", $serie) . "</p>";
     }
     ?>
 </body>

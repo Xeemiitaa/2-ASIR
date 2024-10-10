@@ -3,36 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suma de dos números: Positiva, Negativa o Cero</title>
+    <title>Empleados y Sueldos</title>
 </head>
 <body>
-    <h1>Comprobación de la suma de dos números</h1>
-    
+    <h1>Empleados y Sueldos</h1>
+
     <form method="POST">
-        <label for="num1">Introduce el primer número (a):</label><br>
-        <input type="number" id="num1" name="num1" required><br><br>
+        <h2>Introduce los nombres de los empleados y sus sueldos:</h2>
         
-        <label for="num2">Introduce el segundo número (b):</label><br>
-        <input type="number" id="num2" name="num2" required><br><br>
-        
-        <input type="submit" value="Calcular">
+        <!-- Formulario para ingresar los nombres y sueldos de los empleados -->
+        <?php
+        for ($i = 1; $i <= 7; $i++) {
+            echo "<label for='nombre$i'>Nombre del Empleado $i:</label><br>";
+            echo "<input type='text' id='nombre$i' name='nombre[]' required><br><br>";
+            
+            echo "<label for='sueldo$i'>Sueldo del Empleado $i:</label><br>";
+            echo "<input type='number' id='sueldo$i' name='sueldo[]' step='0.01' required><br><br>";
+        }
+        ?>
+        <input type="submit" value="Procesar">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Tomamos los valores introducidos por el usuario
-        $a = $_POST['num1'];
-        $b = $_POST['num2'];
-        $suma = $a + $b;
+        // Recogemos los nombres y sueldos del formulario
+        $nombres = $_POST['nombre'];
+        $sueldos = $_POST['sueldo'];
 
-        echo "<h2>Resultado:</h2>";
-        // Verificamos si la suma es positiva, negativa o cero
-        if ($suma > 0) {
-            echo "<p>La suma de $a y $b es $suma, que es positiva.</p>";
-        } elseif ($suma < 0) {
-            echo "<p>La suma de $a y $b es $suma, que es negativa.</p>";
+        // A) Encontrar el nombre del empleado con el mayor sueldo
+        $maxSueldo = max($sueldos);
+        $indiceMax = array_search($maxSueldo, $sueldos);
+        $empleadoMax = $nombres[$indiceMax];
+
+        echo "<h2>Empleado con mayor sueldo:</h2>";
+        echo "<p>El empleado con el mayor sueldo es: <strong>$empleadoMax</strong> con un sueldo de <strong>$$maxSueldo</strong>.</p>";
+
+        // B) Calcular la media de los sueldos
+        $mediaSueldo = array_sum($sueldos) / count($sueldos);
+
+        echo "<h2>Empleados con sueldo superior a la media:</h2>";
+        echo "<p>La media de los sueldos es: <strong>$$mediaSueldo</strong>.</p>";
+
+        // Mostrar empleados con sueldo superior a la media
+        $empleadosSuperiores = array();
+
+        for ($i = 0; $i < count($sueldos); $i++) {
+            if ($sueldos[$i] > $mediaSueldo) {
+                $empleadosSuperiores[] = $nombres[$i];
+            }
+        }
+
+        if (!empty($empleadosSuperiores)) {
+            echo "<p>Los empleados con sueldos superiores a la media son:</p>";
+            echo "<ul>";
+            foreach ($empleadosSuperiores as $empleado) {
+                echo "<li>$empleado</li>";
+            }
+            echo "</ul>";
         } else {
-            echo "<p>La suma de $a y $b es $suma, que es igual a cero.</p>";
+            echo "<p>No hay empleados con sueldos superiores a la media.</p>";
         }
     }
     ?>

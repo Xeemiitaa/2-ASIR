@@ -3,49 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expresiones Condicionales</title>
+    <title>Verificar Números</title>
 </head>
 <body>
-    <h1>Expresiones Condicionales</h1>
-
+    <h1>Verificación de Valores</h1>
+    
     <form method="POST">
-        <label for="europeo">Introduce el valor de europeo (1 o 0):</label><br>
-        <input type="number" id="europeo" name="europeo" min="0" max="1" required><br><br>
-
-        <label for="casado">Introduce el valor de casado (1 o 0):</label><br>
-        <input type="number" id="casado" name="casado" min="0" max="1" required><br><br>
-
-        <label for="edad">Introduce la edad:</label><br>
-        <input type="number" id="edad" name="edad" required><br><br>
-
-        <label for="saldo">Introduce el saldo:</label><br>
-        <input type="number" id="saldo" name="saldo" step="0.01" required><br><br>
-
-        <input type="submit" value="Evaluar">
+        <h2>Introduce 7 valores numéricos:</h2>
+        <!-- Cajas de texto para ingresar 7 números -->
+        <?php
+        for ($i = 1; $i <= 7; $i++) {
+            echo "<label for='numero$i'>Número $i:</label><br>";
+            echo "<input type='number' id='numero$i' name='numeros[]' required><br><br>";
+        }
+        ?>
+        <input type="submit" value="Verificar">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Tomamos los valores introducidos por el usuario
-        $europeo = $_POST['europeo'];
-        $casado = $_POST['casado'];
-        $edad = $_POST['edad'];
-        $saldo = $_POST['saldo'];
+        // Recoger los números ingresados
+        $numeros = $_POST['numeros'];
 
-        echo "<h2>Resultados:</h2>";
-
-        // Condición 1: europeo es igual a 1 y casado es igual a 0
-        if ($europeo == 1 && $casado == 0) {
-            echo "<p>Condición 1 cumplida: Europeo es 1 y Casado es 0.</p>";
-        } else {
-            echo "<p>Condición 1 no se cumple.</p>";
+        // Función para verificar si un número es primo
+        function esPrimo($num) {
+            if ($num <= 1) return false; // Números menores o iguales a 1 no son primos
+            for ($i = 2; $i <= sqrt($num); $i++) {
+                if ($num % $i == 0) return false; // No es primo si es divisible por algún número diferente de 1 y él mismo
+            }
+            return true; // Si no fue divisible por ningún número, es primo
         }
 
-        // Condición 2: saldo es superior a 10000 o europeo es igual a 0 y edad divisible por 4
-        if ($saldo > 10000 || ($europeo == 0 && $edad % 4 == 0)) {
-            echo "<p>Condición 2 cumplida: Saldo es superior a 10000 o (Europeo es 0 y Edad es divisible por 4).</p>";
+        // A) Verificar si hay tres números 9
+        $contarNueves = 0;
+        foreach ($numeros as $num) {
+            if ($num == 9) {
+                $contarNueves++;
+            }
+        }
+
+        // B) Verificar si hay al menos dos números pares
+        $contarPares = 0;
+        foreach ($numeros as $num) {
+            if ($num % 2 == 0) { // Si es divisible por 2, es par
+                $contarPares++;
+            }
+        }
+
+        // C) Verificar si hay al menos un número primo
+        $hayPrimo = false;
+        foreach ($numeros as $num) {
+            if (esPrimo($num)) {
+                $hayPrimo = true;
+                break; // No necesitamos seguir buscando más primos
+            }
+        }
+
+        // Verificar si todas las condiciones se cumplen
+        if ($contarNueves == 3 && $contarPares >= 2 && $hayPrimo) {
+            echo "<h2>Resultado: SI</h2>";
         } else {
-            echo "<p>Condición 2 no se cumple.</p>";
+            echo "<h2>Resultado: NO</h2>";
         }
     }
     ?>

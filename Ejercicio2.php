@@ -3,50 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validación: Nota, Edad y Sexo</title>
+    <title>División mediante Restas Sucesivas</title>
 </head>
 <body>
-    <h1>Validación de Nota, Edad y Sexo</h1>
-    
+    <h1>División mediante Restas Sucesivas</h1>
+
     <form method="POST">
-        <label for="nota">Introduce la nota:</label><br>
-        <input type="number" id="nota" name="nota" step="0.1" required><br><br>
-        
-        <label for="edad">Introduce la edad:</label><br>
-        <input type="number" id="edad" name="edad" required><br><br>
+        <!-- Formulario para ingresar dos números -->
+        <label for="dividendo">Ingresa el dividendo:</label><br>
+        <input type="number" id="dividendo" name="dividendo" required><br><br>
 
-        <label for="sexo">Introduce el sexo (V/M):</label><br>
-        <input type="text" id="sexo" name="sexo" maxlength="1" required><br><br>
+        <label for="divisor">Ingresa el divisor:</label><br>
+        <input type="number" id="divisor" name="divisor" required><br><br>
 
-        <input type="submit" value="Enviar">
+        <input type="submit" value="Calcular">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Tomamos los valores introducidos por el usuario
-        $nota = $_POST['nota'];
-        $edad = $_POST['edad'];
-        $sexo = strtolower($_POST['sexo']);  // Convertimos a minúsculas para simplificar
+        // Recoger los datos del formulario
+        $dividendo = $_POST['dividendo'];
+        $divisor = $_POST['divisor'];
 
-        echo "<h2>Resultado:</h2>";
+        // Comprobar si el divisor es 0
+        if ($divisor == 0) {
+            echo "<h2>Error: No se puede dividir entre cero.</h2>";
+        } else {
+            // Inicializar el cociente a 0
+            $cociente = 0;
+            $residuo = $dividendo;
 
-        // Comprobamos si la edad es menor de 18
-        if ($edad < 18) {
-            echo "<p>NO ES POSIBLE, es menor de edad.</p>";
-        }
-        // Comprobamos si la nota es menor de 5
-        elseif ($nota < 5) {
-            echo "<p>NO ES POSIBLE, nota suspensa.</p>";
-        }
-        // Si la nota es aprobada y la edad es mayor o igual a 18
-        else {
-            if ($sexo == 'v') {
-                echo "<p>ACEPTADO.</p>";
-            } elseif ($sexo == 'm') {
-                echo "<p>ACEPTADA.</p>";
-            } else {
-                echo "<p>Sexo no válido, por favor introduce 'V' o 'M'.</p>";
+            // Realizar restas sucesivas mientras el residuo sea mayor o igual que el divisor
+            while ($residuo >= $divisor) {
+                $residuo -= $divisor; // Restamos el divisor al residuo
+                $cociente++; // Incrementamos el cociente
             }
+
+            // Mostrar el resultado
+            echo "<h2>Resultado de la división:</h2>";
+            echo "<p>Dividendo: $dividendo</p>";
+            echo "<p>Divisor: $divisor</p>";
+            echo "<p>Cociente: $cociente</p>";
+            echo "<p>Residuo: $residuo</p>";
         }
     }
     ?>
