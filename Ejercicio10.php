@@ -3,41 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Sr. o Sra.</title>
+    <title>Evaluación de la Nota</title>
 </head>
 <body>
-    <h1>Alterar Nombre con Título según el Sexo</h1>
-
+    <h1>Evaluación de la Nota</h1>
+    
     <form method="POST">
-        <!-- Campo para ingresar el nombre -->
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
-
-        <!-- Selección del sexo (H o M) -->
-        <label for="sexo">Sexo:</label>
-        <select id="sexo" name="sexo" required>
-            <option value="H">Hombre</option>
-            <option value="M">Mujer</option>
-        </select><br><br>
-
-        <input type="submit" value="Enviar">
+        <label for="nota">Introduce una nota entre 0 y 10:</label><br>
+        <input type="number" id="nota" name="nota" min="0" max="10" required><br><br>
+        
+        <input type="submit" value="Evaluar">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Recoger el nombre y el sexo ingresados
-        $nombre = $_POST['nombre'];
-        $sexo = $_POST['sexo'];
+        // Tomamos el valor de la nota introducido por el usuario
+        $nota = $_POST['nota'];
 
-        // Alterar el nombre según el sexo
-        if ($sexo == 'H') {
-            $nombre = "Sr. " . $nombre;
-        } elseif ($sexo == 'M') {
-            $nombre = "Sra. " . $nombre;
+        echo "<h2>Resultado:</h2>";
+        
+        // Estructura switch para evaluar la nota
+        switch (true) {
+            case ($nota >= 0 && $nota <= 2):
+                echo "<p>Muy deficiente</p>";
+                break;
+            case ($nota == 3 || $nota == 4):
+                echo "<p>Deficiente</p>";
+                break;
+            case ($nota == 5):
+                echo "<p>Aprobado</p>";
+                break;
+            case ($nota == 6):
+                echo "<p>Bien</p>";
+                break;
+            case ($nota == 7 || $nota == 8):
+                echo "<p>Notable</p>";
+                break;
+            case ($nota == 9 || $nota == 10):
+                echo "<p>Sobresaliente</p>";
+                break;
+            default:
+                echo "<p>Error: Nota no válida</p>";
+                break;
         }
-
-        // Visualizar el nombre alterado
-        echo "<h2>Nombre alterado: $nombre</h2>";
     }
     ?>
 </body>

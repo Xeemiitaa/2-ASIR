@@ -3,60 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificar Orden Ascendente</title>
+    <title>Divisores de un Número</title>
 </head>
 <body>
-    <h1>Verificar si los valores están ordenados ascendentemente</h1>
-
+    <h1>Encontrar Divisores de un Número</h1>
+    
     <form method="POST">
-        <!-- Cajas de texto para ingresar siete valores -->
-        <label for="valor1">Valor 1:</label>
-        <input type="number" id="valor1" name="valor1" required><br><br>
-
-        <label for="valor2">Valor 2:</label>
-        <input type="number" id="valor2" name="valor2" required><br><br>
-
-        <label for="valor3">Valor 3:</label>
-        <input type="number" id="valor3" name="valor3" required><br><br>
-
-        <label for="valor4">Valor 4:</label>
-        <input type="number" id="valor4" name="valor4" required><br><br>
-
-        <label for="valor5">Valor 5:</label>
-        <input type="number" id="valor5" name="valor5" required><br><br>
-
-        <label for="valor6">Valor 6:</label>
-        <input type="number" id="valor6" name="valor6" required><br><br>
-
-        <label for="valor7">Valor 7:</label>
-        <input type="number" id="valor7" name="valor7" required><br><br>
-
-        <input type="submit" value="Verificar">
+        <label for="numero">Introduce un número entero positivo:</label><br>
+        <input type="number" id="numero" name="numero" required><br><br>
+        
+        <input type="submit" value="Encontrar Divisores">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Recoger los valores ingresados
-        $valores = array(
-            $_POST['valor1'],
-            $_POST['valor2'],
-            $_POST['valor3'],
-            $_POST['valor4'],
-            $_POST['valor5'],
-            $_POST['valor6'],
-            $_POST['valor7']
-        );
+        // Tomamos el valor introducido por el usuario
+        $numero = $_POST['numero'];
 
-        // Verificar si los valores están ordenados de forma ascendente
-        $ordenados = $valores;
-        sort($ordenados);  // Ordena el array de forma ascendente
+        echo "<h2>Divisores de $numero:</h2>";
+        echo "<ul>";
 
-        // Comparar el array original con el ordenado
-        if ($valores === $ordenados) {
-            echo "<h2>Los valores están ordenados ascendentemente.</h2>";
-        } else {
-            echo "<h2>Los valores NO están ordenados ascendentemente.</h2>";
+        // Encontrar y mostrar los divisores
+        for ($i = 1; $i <= $numero; $i++) {
+            if ($numero % $i == 0) { // Comprobar si i es un divisor de numero
+                print "<li>$i</li>"; // Imprimir el divisor
+            }
         }
+
+        echo "</ul>";
     }
     ?>
 </body>
