@@ -3,49 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expresiones Condicionales</title>
+    <title>Números Perfectos en PHP</title>
 </head>
 <body>
-    <h1>Expresiones Condicionales</h1>
+    <h1>Verificación de Números Perfectos</h1>
 
     <form method="POST">
-        <label for="europeo">Introduce el valor de europeo (1 o 0):</label><br>
-        <input type="number" id="europeo" name="europeo" min="0" max="1" required><br><br>
+        <label for="valor1">Primer Valor:</label>
+        <input type="number" id="valor1" name="valor1" required><br><br>
 
-        <label for="casado">Introduce el valor de casado (1 o 0):</label><br>
-        <input type="number" id="casado" name="casado" min="0" max="1" required><br><br>
+        <label for="valor2">Segundo Valor:</label>
+        <input type="number" id="valor2" name="valor2" required><br><br>
 
-        <label for="edad">Introduce la edad:</label><br>
-        <input type="number" id="edad" name="edad" required><br><br>
+        <label for="valor3">Tercer Valor:</label>
+        <input type="number" id="valor3" name="valor3" required><br><br>
 
-        <label for="saldo">Introduce el saldo:</label><br>
-        <input type="number" id="saldo" name="saldo" step="0.01" required><br><br>
-
-        <input type="submit" value="Evaluar">
+        <input type="submit" value="Verificar">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Tomamos los valores introducidos por el usuario
-        $europeo = $_POST['europeo'];
-        $casado = $_POST['casado'];
-        $edad = $_POST['edad'];
-        $saldo = $_POST['saldo'];
+        // Recoger los valores ingresados
+        $valor1 = intval($_POST['valor1']);
+        $valor2 = intval($_POST['valor2']);
+        $valor3 = intval($_POST['valor3']);
 
-        echo "<h2>Resultados:</h2>";
+        // Función para verificar si un número es perfecto
+        function esPerfecto($numero) {
+            $sumaDivisores = 0;
 
-        // Condición 1: europeo es igual a 1 y casado es igual a 0
-        if ($europeo == 1 && $casado == 0) {
-            echo "<p>Condición 1 cumplida: Europeo es 1 y Casado es 0.</p>";
-        } else {
-            echo "<p>Condición 1 no se cumple.</p>";
+            // Encontrar los divisores y sumarlos
+            for ($i = 1; $i < $numero; $i++) {
+                if ($numero % $i == 0) {
+                    $sumaDivisores += $i; // Sumar el divisor
+                }
+            }
+
+            return $sumaDivisores == $numero; // Comprobar si es perfecto
         }
 
-        // Condición 2: saldo es superior a 10000 o europeo es igual a 0 y edad divisible por 4
-        if ($saldo > 10000 || ($europeo == 0 && $edad % 4 == 0)) {
-            echo "<p>Condición 2 cumplida: Saldo es superior a 10000 o (Europeo es 0 y Edad es divisible por 4).</p>";
+        // Verificar cada número y mostrar resultados
+        $resultado1 = esPerfecto($valor1) ? "SI" : "NO";
+        $resultado2 = esPerfecto($valor2) ? "SI" : "NO";
+        $resultado3 = esPerfecto($valor3) ? "SI" : "NO";
+
+        // Mostrar los resultados
+        echo "<h2>Resultados:</h2>";
+        echo "El número $valor1 es perfecto: $resultado1<br>";
+        echo "El número $valor2 es perfecto: $resultado2<br>";
+        echo "El número $valor3 es perfecto: $resultado3<br>";
+
+        // Verificar si los tres son perfectos
+        if ($resultado1 == "SI" && $resultado2 == "SI" && $resultado3 == "SI") {
+            echo "Los tres números son perfectos.";
         } else {
-            echo "<p>Condición 2 no se cumple.</p>";
+            echo "No todos los números son perfectos.";
         }
     }
     ?>

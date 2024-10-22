@@ -3,37 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suma de dos números: Positiva, Negativa o Cero</title>
+    <title>Generar Serie de Números</title>
 </head>
 <body>
-    <h1>Comprobación de la suma de dos números</h1>
-    
+    <h1>Generar Serie de Números</h1>
+
     <form method="POST">
-        <label for="num1">Introduce el primer número (a):</label><br>
-        <input type="number" id="num1" name="num1" required><br><br>
-        
-        <label for="num2">Introduce el segundo número (b):</label><br>
-        <input type="number" id="num2" name="num2" required><br><br>
-        
-        <input type="submit" value="Calcular">
+        <label for="cantidad">Cantidad de valores (num):</label>
+        <input type="number" id="cantidad" name="cantidad" required min="1"><br><br>
+        <input type="submit" value="Generar Serie">
     </form>
 
     <?php
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Tomamos los valores introducidos por el usuario
-        $a = $_POST['num1'];
-        $b = $_POST['num2'];
-        $suma = $a + $b;
+        // Recoger la cantidad de valores ingresados
+        $cantidad = intval($_POST['cantidad']);
 
-        echo "<h2>Resultado:</h2>";
-        // Verificamos si la suma es positiva, negativa o cero
-        if ($suma > 0) {
-            echo "<p>La suma de $a y $b es $suma, que es positiva.</p>";
-        } elseif ($suma < 0) {
-            echo "<p>La suma de $a y $b es $suma, que es negativa.</p>";
-        } else {
-            echo "<p>La suma de $a y $b es $suma, que es igual a cero.</p>";
+        // Inicializar el array para la serie
+        $serie = [];
+        for ($i = 0; $i < $cantidad; $i++) {
+            // Generar la serie con los patrones
+            if ($i % 2 == 0) {
+                // Para índices pares: 1, 3, 5, ...
+                $serie[] = $i + 1;  // 1, 3, 5, ...
+            } else {
+                // Para índices impares: 6, 10, 14, ...
+                $serie[] = ($i * 2) + 4;  // 6, 10, 14, ...
+            }
         }
+
+        // Visualizar la serie
+        echo "<h2>Serie Generada:</h2>";
+        echo implode(", ", $serie);  // Convierte el array a cadena separada por comas
     }
     ?>
 </body>
